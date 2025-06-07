@@ -14,9 +14,14 @@ def printv(value):
     if regex.fullmatch(r'"[^"]*"', value):
         print(value[1:-1])  #removing '"' btw
     else:
-        #print variable pass for now
-        pass
+        print(variables[value])
 
+def inputv(value):
+    variables[value] = input()
+
+variables = {"Hello_World":"Easy"}
+def makevar(name, value):
+    variables[name] = value
 #enterpreteur
 
 #flatten list for code_lines
@@ -53,14 +58,18 @@ def run_block(code):
             continue
 
         match command:  
-            case "once":
+            case "once()":
                 pass
+
             case "printv()":
                 matchval = regex.search(r"\((.*?)\)", line)
                 if matchval:
                     printv(matchval.group(1))
+            
             case "inputv()":
-                pass
+                matchval = regex.search(r"\((.*?)\)", line)
+                if matchval:
+                    inputv(matchval.group(1))
             case "///":
                 _loopidx += 1
                 while _loopidx < len(code) and code[_loopidx] != "///":
@@ -71,10 +80,13 @@ def run_block(code):
 
             case "math()":
                 pass
+
             case "end":
                 break
+
             case other:
-                pass
+                other = other.split(" ")
+                makevar(other[0].strip(), other[2].strip())
 
         _loopidx += 1
 

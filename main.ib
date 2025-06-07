@@ -13,4 +13,15 @@ once() {
         end
     ///
     printv("End of commentp")
+    ///
+    assigning variables for test :3
+    ///
+
+    name = empty
+
+    printv("What is your name???:")
+    inputv(name)
+
+    printv("Hello")
+    printv(name)
 }
