@@ -1,0 +1,16 @@
+once() {
+    printv("Start of comment")
+    ///
+        printv("Hello!")
+        repeat(2) {
+            printv("Die")
+            repeat(5) {
+                printv("Nope")
+            end
+            }
+            end
+        }
+        end
+    ///
+    printv("End of commentp")
+}
