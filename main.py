@@ -10,11 +10,38 @@ if initcommand[0] == "inbrace":
         file = f.read()
 
 #built in BS
+def math(value):
+
+    #finish the function idiot you were implementing changing the values of numbers and expression into a single result Think Think Think! use del btw
+    value = value.split(" ")
+    index = 0
+    for thing in value:
+        if thing == "+":
+            int(value[index - 1]) + int(value[index + 1])
+            value[index - 1]
+
+            index += 2
+        if thing == "-":
+            int(value[index - 1]) - int(value[index + 1])
+            index += 2
+        if thing == "*"
+            int(value[index - 1]) * int(value[index + 1])
+            index += 2
+        if thing == "//":
+            int(value[index - 1]) // int(value[index + 1])
+            index += 2
+        if thing == "/":
+            int(value[index - 1]) / int(value[index + 1])
+            index += 2
+    
 def printlnv(value):
     if regex.fullmatch(r'"[^"]*"', value):
         print(value[1:-1])  #removing '"' btw
     else:
-        print(variables[value])
+        if "+" in value or "-" in value or "*" in value or "//" in value or "/" in value:
+            print(math(value))
+        else:
+            print(variables[value])
 
 def printv(value):
     if regex.fullmatch(r'"[^"]*"', value):
@@ -89,8 +116,7 @@ def run_block(code):
                 _loopidx += 1
                 continue
 
-            case "math()":
-                pass
+            
 
             case "end":
                 break
