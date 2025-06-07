@@ -10,11 +10,17 @@ if initcommand[0] == "inbrace":
         file = f.read()
 
 #built in BS
-def printv(value):
+def printlnv(value):
     if regex.fullmatch(r'"[^"]*"', value):
         print(value[1:-1])  #removing '"' btw
     else:
         print(variables[value])
+
+def printv(value):
+    if regex.fullmatch(r'"[^"]*"', value):
+        print(value[1:-1], end="")  #removing '"' btw
+    else:
+        print(variables[value], end="")
 
 def inputv(value):
     variables[value] = input()
@@ -65,6 +71,11 @@ def run_block(code):
                 matchval = regex.search(r"\((.*?)\)", line)
                 if matchval:
                     printv(matchval.group(1))
+
+            case "printlnv()":
+                matchval = regex.search(r"\((.*?)\)", line)
+                if matchval:
+                    printlnv(matchval.group(1))
             
             case "inputv()":
                 matchval = regex.search(r"\((.*?)\)", line)

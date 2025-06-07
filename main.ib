@@ -1,5 +1,5 @@
 once() {
-    printv("Start of comment")
+    printlnv("Start of comment")
     ///
         printv("Hello!")
         repeat(2) {
@@ -12,7 +12,7 @@ once() {
         }
         end
     ///
-    printv("End of commentp")
+    printlnv("End of commentp")
     ///
     assigning variables for test :3
     ///
@@ -22,6 +22,6 @@ once() {
     printv("What is your name???:")
     inputv(name)
 
-    printv("Hello")
+    printv("Hello ")
     printv(name)
 }
