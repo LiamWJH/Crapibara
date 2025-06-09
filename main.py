@@ -11,28 +11,72 @@ if initcommand[0] == "inbrace":
 
 #built in BS
 def math(value):
-
-    #finish the function idiot you were implementing changing the values of numbers and expression into a single result Think Think Think! use del btw
     value = value.split(" ")
     index = 0
-    for thing in value:
-        if thing == "+":
-            int(value[index - 1]) + int(value[index + 1])
-            value[index - 1]
-
-            index += 2
-        if thing == "-":
-            int(value[index - 1]) - int(value[index + 1])
-            index += 2
-        if thing == "*"
-            int(value[index - 1]) * int(value[index + 1])
-            index += 2
-        if thing == "//":
-            int(value[index - 1]) // int(value[index + 1])
-            index += 2
-        if thing == "/":
-            int(value[index - 1]) / int(value[index + 1])
-            index += 2
+    while index != len(value) - 1:
+        if value[index] == "+":
+            if value[index - 1].isalpha():
+                
+                varname = value[index - 1]
+                value[index - 1] = variables[varname]
+                
+                if type(value[index - 1]).__name__ == 'str':
+                    res = variables[varname] + variables[value[index + 1]]
+                    del value[index - 1]
+                    del value[index - 1]
+                    
+                    
+                else:
+                    res = int(value[index - 1]) + int(value[index + 1])
+                    del value[index - 1]
+                    del value[index - 1]
+            
+            value[index - 1] = str(res)
+            index -= 2
+        if value[index] == "-":
+            if value[index - 1].isalpha():
+                value[index - 1] = variables[value[index - 1]]
+                
+            res = int(value[index - 1]) - int(value[index + 1])
+            del value[index - 1]
+            del value[index - 1]
+            
+            value[index - 1] = str(res)
+            index -= 2
+        if value[index] == "*":
+            if value[index - 1].isalpha():
+                value[index - 1] = variables[value[index - 1]]
+                
+            res = int(value[index - 1]) * int(value[index + 1])
+            del value[index - 1]
+            del value[index - 1]
+            
+            value[index - 1] = str(res)
+            index -= 2
+        if value[index] == "//":
+            if value[index - 1].isalpha():
+                value[index - 1] = variables[value[index - 1]]
+                
+            res = int(value[index - 1]) // int(value[index + 1])
+            del value[index - 1]
+            del value[index - 1]
+            
+            value[index - 1] = str(res)
+            index -= 2
+        if value[index] == "/":
+            if value[index - 1].isalpha():
+                value[index - 1] = variables[value[index - 1]]
+                
+            res = int(int(value[index - 1]) / int(value[index + 1]))
+            del value[index - 1]
+            del value[index - 1]
+            
+            value[index - 1] = str(res)
+            index -= 2
+        index += 1
+    return value[0]
+        
+        
     
 def printlnv(value):
     if regex.fullmatch(r'"[^"]*"', value):
@@ -47,14 +91,20 @@ def printv(value):
     if regex.fullmatch(r'"[^"]*"', value):
         print(value[1:-1], end="")  #removing '"' btw
     else:
-        print(variables[value], end="")
+        if "+" in value or "-" in value or "*" in value or "//" in value or "/" in value:
+            print(math(value))
+        else:
+            print(variables[value])
 
 def inputv(value):
     variables[value] = input()
 
 variables = {"Hello_World":"Easy"}
 def makevar(name, value):
-    variables[name] = value
+    if "m:" in value:
+        variables[name] = math(value)
+    else:
+        variables[name] = value
 #enterpreteur
 
 #flatten list for code_lines
@@ -129,6 +179,7 @@ def run_block(code):
 
 
 splitted = []
+
 
 for thing in file.split("\n"):
     if "{" in thing or "}" in thing:
