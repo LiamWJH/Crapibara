@@ -1,35 +1,7 @@
 once() {
-    printlnv("Start of comment")
-    ///
-        printv("Hello!")
-        repeat(2) {
-            printv("Die")
-            repeat(5) {
-                printv("Nope")
-            end
-            }
-            end
-        }
+    if (1 < 2) {
+        printlnv("Hello world")
         end
-    ///
-
-    name = empty
-    smth = empty
-    smthn = empty
-
-    printv("What is your name???:")
-    inputv(name)
-    inputv(smth)
-    inputv(smthn)
-
-    printv("Hello ")
-    printv(name)
-
-    ///
-    printlnv("Did you know 1 + 2 + 1 - 7 * 8 / 2 was: ")
-    printv(1 + 2 + 1 - 7 * 8 / 2)
-    ///
-
-    printlnv("Test, math with variables")
-    printv(smth + smthn)
+    }
+    end
 }

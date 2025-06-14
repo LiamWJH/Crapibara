@@ -76,7 +76,16 @@ def math(value):
         index += 1
     return value[0]
         
-        
+def conditionals(types, value, code):
+    if types == "if":
+        if eval(value):
+            run_block(code)
+        else:
+            pass
+    
+    #maybe implement later
+    #elif type == "else_if":
+    #    if value
     
 def printlnv(value):
     if regex.fullmatch(r'"[^"]*"', value):
@@ -138,6 +147,21 @@ def run_block(code):
                     run_block(inner_block)
 
             _loopidx = skipidx + 1
+            continue
+        
+        if command == "if ()":
+            skipidx = _loopidx
+            while skipidx < len(code) and code[skipidx].strip() != "end":
+                skipidx += 1
+                inner_block = code[_loopidx + 1 : skipidx]
+
+            condition = regex.search(r"\((.*?)\)", line)
+
+            #print(condition.group(1))
+            conditionals("if", condition.group(1), inner_block)
+
+            _loopidx = skipidx + 1
+            #print(_loopidx, code[_loopidx])
             continue
 
         match command:  
