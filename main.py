@@ -84,9 +84,14 @@ def conditionals(types, value, code):
             value = value.split(" ")
             while index < len(value):
                 if value[index].isalpha():
-                    value[index] = variables[value[index]]
+                    if variables[value[index]].isalpha():
+                        value[index] = f"'{variables[value[index]]}'"
+                    else:
+                        value[index] = variables[value[index]]
+                    
                 index += 1
             value = " ".join(value)
+            print(value)
 
         if eval(value):
             run_block(code)

@@ -1,6 +1,6 @@
 once() {
-    a = 5
-    b = 7
+    a = a
+    b = b
     if (a < b) {
         printlnv("Hello world")
         end
