@@ -5,7 +5,7 @@ initcommand = initcommand.split(" ")
 
 file = ''
 #init command stuff (inbrace, format, BOOM)
-if initcommand[0] == "inbrace":
+if initcommand[0] == "crapibara":
     with open(initcommand[1], "r") as f:
         file = f.read()
 
