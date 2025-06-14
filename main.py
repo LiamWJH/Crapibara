@@ -78,6 +78,16 @@ def math(value):
         
 def conditionals(types, value, code):
     if types == "if":
+        #value parsing: SHIT
+        if "=" in value or ">" in value or "<" in value:
+            index = 0
+            value = value.split(" ")
+            while index < len(value):
+                if value[index].isalpha():
+                    value[index] = variables[value[index]]
+                index += 1
+            value = " ".join(value)
+
         if eval(value):
             run_block(code)
         else:
