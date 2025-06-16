@@ -1,7 +1,6 @@
 import re as regex
 
-initcommand = input()
-initcommand = initcommand.split(" ")
+initcommand = input().split(" ")
 
 file = ''
 #init command stuff (inbrace, format, BOOM)
@@ -80,7 +79,7 @@ def math(value):
         
 def conditionals(types, value, code):
     if types == "if":
-        #value parsing: SHIT
+        #turning str into var value
         if "=" in value or ">" in value or "<" in value:
             index = 0
             value = value.split(" ")
@@ -94,10 +93,6 @@ def conditionals(types, value, code):
             run_block(code)
         else:
             pass
-    
-    #maybe implement later
-    #elif type == "else_if":
-    #    if value
     
 def printlnv(value):
     if regex.fullmatch(r'"[^"]*"', value):
@@ -120,12 +115,13 @@ def printv(value):
 def inputv(value):
     variables[value] = input()
 
-variables = {"Hello_World":"Easy"}
+variables = {"capibara":"its crapibara"}
 def makevar(name, value):
-    if "m:" in value:
+    if "+" in value or "-" in value or "*" in value or "/" in value or "//" in value:
         variables[name] = math(value)
     else:
         variables[name] = value
+
 #enterpreteur
 
 #flatten list for code_lines
@@ -153,58 +149,64 @@ def find_end(cmdindex, code):
                 return idx
 
 
-#repeat loop BS
-#helper for NESTEDqrqrqrqrqrqr
 def run_block(code):
     _loopidx = 0
     while _loopidx < len(code):
         line = code[_loopidx]
-        #print("line: ", line, _loopidx)
+
         command = regex.sub(r'"[^"]*"', '', line)
         command = regex.sub(r"\([^)]*\)", "()", command)
 
         if command == "repeat()":
+            #find code to run and index to skip to
             skipidx = find_end(_loopidx, code)
             inner_block = code[_loopidx + 1 : skipidx]
+            
+            #Runs code from value
             ntimes = int(regex.search(r"\d+", line).group())
-
             for _ in range(ntimes):
                 run_block(inner_block)
 
             _loopidx = skipidx + 1
             continue
 
-        
         if command == "if ()":
+            #finds code to run and skip idx
             skipidx = find_end(_loopidx, code)
             inner_block = code[_loopidx + 1 : skipidx]
 
+            #finds the condition to run and pass it into the conditionals function
             condition = regex.search(r"\((.*?)\)", line).group(1)
             conditionals("if", condition, inner_block)
 
             _loopidx = skipidx + 1
             continue
 
-
         match command:
             case "once()":
+                #starter function nothing needed
                 pass
 
             case "printv()":
+                #find value and pass it to the function
                 matchval = regex.search(r"\((.*?)\)", line)
                 if matchval:
                     printv(matchval.group(1))
 
             case "printlnv()":
+                #find value and pass it to the function
                 matchval = regex.search(r"\((.*?)\)", line)
                 if matchval:
                     printlnv(matchval.group(1))
             
             case "inputv()":
+                #find value and pass it to the function
                 matchval = regex.search(r"\((.*?)\)", line)
                 if matchval:
                     inputv(matchval.group(1))
+            
             case "///":
+                #skips to where there is no comments
                 _loopidx += 1
                 while _loopidx < len(code) and code[_loopidx] != "///":
                     _loopidx += 1
@@ -212,36 +214,30 @@ def run_block(code):
                 _loopidx += 1
                 continue
 
-            
-
-            case "end":
-                break
-
             case other:
-                if other.strip() == "once ()":
-                    pass
-                else:
-                    other = other.split(" ")
-                    makevar(other[0].strip(), other[2].strip())
+                #declare variable if not there
+                other = other.split(" ")
+                makevar(other[0].strip(), other[2].strip())
 
         _loopidx += 1
 
+def parse_braces(file):
+    result = []
+    for line in file.split("\n"):
+        if "{" in line or "}" in line:
+            if "{" in line:
+                result.append(line[:-2])
+            if "}" in line:
+                pass
+        else:
+            result.append(line)
+    
+    return result
 
-splitted = []
+splitted = parse_braces(file)
 
-
-for thing in file.split("\n"):
-    if "{" in thing or "}" in thing:
-        if "{" in thing:
-            splitted.append(thing[:-2])
-        if "}" in thing:
-            pass
-    else:
-        splitted.append(thing)
-
-for thing in range(len(splitted)):
-    splitted[thing] = splitted[thing].strip()
-    splitted[thing] = splitted[thing].split("\n")
+for index in range(len(splitted)):
+    splitted[index] = splitted[index].strip().split("\n")
 
 code_lines = flattenlist(splitted)
 code_lines = [line for line in code_lines if line] # '' removal
@@ -254,4 +250,3 @@ print("")
 
 
 run_block(code_lines)
-#print(variables)
