@@ -1,9 +1,19 @@
-once() {
-    a = a
-    b = b
-    if (a < b) {
-        printlnv("Hello world")
-        end
+once () {
+    repeat(6) {
+        a = 0
+        printlnv("Babo")
+        printv("mungchungi")
+        inputv(a)
+
+        if (a > 6) {
+            printlnv("bab mungchungi")
+            end
+        }
+        if (a <= 6) {
+            printlnv("bbbbbbabbbabbbboooo")
+            end
+        }
+    end
     }
     end
 }

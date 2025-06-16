@@ -10,6 +10,8 @@ if initcommand[0] == "crapibara":
         file = f.read()
 
 #built in BS
+
+
 def math(value):
     value = value.split(" ")
     index = 0
@@ -136,45 +138,55 @@ def flattenlist(vallist):
             flattened_ver.append(thing)
     return flattened_ver
 
+
+def find_end(cmdindex, code):
+    depth = 0
+    for idx in range(cmdindex, len(code)):
+        cmd = regex.sub(r'"[^"]*"', '', code[idx])
+        cmd = regex.sub(r"\([^)]*\)", "()", cmd) 
+
+        if cmd in ("if ()", "repeat()"):
+            depth += 1
+        elif cmd == "end":
+            depth -= 1
+            if depth == 0:
+                return idx
+
+
 #repeat loop BS
 #helper for NESTEDqrqrqrqrqrqr
 def run_block(code):
     _loopidx = 0
     while _loopidx < len(code):
         line = code[_loopidx]
+        #print("line: ", line, _loopidx)
         command = regex.sub(r'"[^"]*"', '', line)
         command = regex.sub(r"\([^)]*\)", "()", command)
 
         if command == "repeat()":
-            skipidx = _loopidx
-            while skipidx < len(code) and code[skipidx].strip() != "end":
-                skipidx += 1
+            skipidx = find_end(_loopidx, code)
+            inner_block = code[_loopidx + 1 : skipidx]
+            ntimes = int(regex.search(r"\d+", line).group())
 
-            ntimes = regex.search(r"\d+", line)
-            if ntimes:
-                inner_block = code[_loopidx + 1 : skipidx]
-                for _ in range(int(ntimes.group())):
-                    run_block(inner_block)
+            for _ in range(ntimes):
+                run_block(inner_block)
 
             _loopidx = skipidx + 1
             continue
+
         
         if command == "if ()":
-            skipidx = _loopidx
-            while skipidx < len(code) and code[skipidx].strip() != "end":
-                skipidx += 1
-                inner_block = code[_loopidx + 1 : skipidx]
+            skipidx = find_end(_loopidx, code)
+            inner_block = code[_loopidx + 1 : skipidx]
 
-            condition = regex.search(r"\((.*?)\)", line)
-
-            #print(condition.group(1))
-            conditionals("if", condition.group(1), inner_block)
+            condition = regex.search(r"\((.*?)\)", line).group(1)
+            conditionals("if", condition, inner_block)
 
             _loopidx = skipidx + 1
-            #print(_loopidx, code[_loopidx])
             continue
 
-        match command:  
+
+        match command:
             case "once()":
                 pass
 
@@ -206,8 +218,11 @@ def run_block(code):
                 break
 
             case other:
-                other = other.split(" ")
-                makevar(other[0].strip(), other[2].strip())
+                if other.strip() == "once ()":
+                    pass
+                else:
+                    other = other.split(" ")
+                    makevar(other[0].strip(), other[2].strip())
 
         _loopidx += 1
 
@@ -239,3 +254,4 @@ print("")
 
 
 run_block(code_lines)
+#print(variables)
