@@ -1,19 +1,7 @@
 once() {
-    repeat(6) {
-        a = 0
-        printlnv("Babo")
-        printv("mungchungi")
-        inputv(a)
-
-        if (a > 6) {
-            printlnv("bab mungchungi")
-            end
-        }
-        if (a <= 6) {
-            printlnv("bbbbbbabbbabbbboooo")
-            end
-        }
+    if (1 > 0.1) {
+        printv("blahblah")
     end
     }
-    end
+end
 }
