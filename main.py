@@ -1,6 +1,8 @@
 import re as regex
+import time as t
 
 initcommand = input().split(" ")
+starttime = t.time()
 
 file = ''
 #init command stuff (inbrace, format, BOOM)
@@ -288,3 +290,6 @@ print("")
 
 
 run_block(code_lines)
+endtime = t.time()
+
+print(f"Time Elapsed: {starttime - endtime:.6f}")
