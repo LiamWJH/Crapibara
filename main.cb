@@ -3,5 +3,15 @@ once() {
         printv("blahblah")
     end
     }
+    repeat(100) {
+        printlnv("This is printed 100 times")
+        end
+    }
+
+    printv("Whats your name?")
+    inputv(name)
+
+    printv("Hello: ")
+    printv(name)
 end
 }
