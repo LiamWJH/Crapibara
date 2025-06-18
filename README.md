@@ -63,6 +63,7 @@ The **prints** are each there for print a value and a new line with it or just t
 
 _example script:_
 >once() {
+
 >    printv("Script started!")
 >    printlnv("New line!")
 >    end
