@@ -292,4 +292,4 @@ print("")
 run_block(code_lines)
 endtime = t.time()
 
-print(f"Time Elapsed: {starttime - endtime:.6f}")
+print(f"Time Elapsed: {endtime - starttime:.6f}")
