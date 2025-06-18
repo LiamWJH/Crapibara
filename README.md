@@ -20,31 +20,47 @@ and it will run the file
 The once() statement is the start of your whole program it is stating that your program is gonna run all the script inside the **once()** literally **once** you should always remember that it should be ended with a end statement
 _example script:_
 >once() {
+
 >    printlnv("Bye bye world!")
+
 >    end
+
 >}
 
  2. repeat()
 One of the unique intersting features of our language **repeat()** is a simliar form to the **once()** statement however, it runs the script inside it's scope the _amount of time given_ in the parenthesis, the value inside the () should be a **number** without '  ""  ' inside it. Lastly you should also end this with a end statement
 _example script:_
 >once() {
+
 >    printv("Script started!")
+
 >    repeat(10) {
+
 >        printlnv("This runs for 10 times!")
+
 >        end
+
 >    }
+
 >    end
+
 >}
 
 3. end
 The **end** statement is as simple as it gets, end is to be used in all end parts of the scope whether it's a i**if()** or a **repeat()** or a **once()**, it lets the enterpreuter know where is the end of the code.
 _example script_:
 >once() {
+
 >    printv("Script started!")
+
 >    end
+
 >    ///
+
 >   script ended
+
 >   ///
+
 >}
 
 4. ///
@@ -52,10 +68,15 @@ The **///** is a multiline comment statement, it starts with a **///** and ends 
 
 _example script:_
 >once() {
+
 >   ///
+
 >   printv("Nothing happens here!")
+
 >   ///
+
 >   end
+
 >}
 
 5. printv and printlnv
@@ -65,8 +86,11 @@ _example script:_
 >once() {
 
 >    printv("Script started!")
+
 >    printlnv("New line!")
+
 >    end
+
 >}
 
 6. variables
@@ -76,13 +100,23 @@ here the value if putten "" around the given value is registered as a string, me
 
 _example script:_
 >once() {
+
 >    number = 5
+
 >    printv("I made a variable!")
+
 >
+
 >    repeat(5) {
+
 >       number = number + 1
+
 >       printv("I incremented the number by one!")
->       end   
+
+>       end
+
 >   }
+
 >    end
+
 >}
