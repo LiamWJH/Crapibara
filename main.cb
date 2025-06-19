@@ -1,17 +1,6 @@
 once() {
-    if (1 > 0.1) {
-        printv("blahblah")
-    end
-    }
-    repeat(100) {
-        printlnv("This is printed 100 times")
-        end
-    }
-
-    printv("Whats your name?")
-    inputv(name)
-
-    printv("Hello: ")
-    printv(name)
+    a = ["1", "2", "a"]
+    printv(a)
+    printv(a[0])
 end
 }

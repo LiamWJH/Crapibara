@@ -13,88 +13,23 @@ if initcommand[0] == "crapibara":
 _loopidx = 0
 #built in BS
 
-
+def typedifpossible(value):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return value
+    
 def math(value):
     value = value.split(" ")
     index = 0
     while index != len(value) - 1:
-        if value[index] == "+":
-            if value[index - 1].isalpha():
-                
-                varname = value[index - 1]
-                value[index - 1] = variables[varname]
-                
-                if type(value[index - 1]).__name__ == 'str':
-                    res = variables[varname] + variables[value[index + 1]]
-                    del value[index - 1]
-                    del value[index - 1]
-                    
-                    
-                else:
-                    try:
-                        res = int(value[index - 1]) + int(value[index + 1])
-                        del value[index - 1]
-                        del value[index - 1]
-                    except ValueError as ve:
-                        errorlog("Type convertion error", _loopidx, "Dont try to convert INT to STR or LIST to INT or etc")
-                
-            value[index - 1] = str(res)
-            index -= 2
-        
-        if value[index] == "-":
-            if value[index - 1].isalpha():
-                value[index - 1] = variables[value[index - 1]]
-                
-            try:
-                res = int(value[index - 1]) - int(value[index + 1])
-                del value[index - 1]
-                del value[index - 1]
-            except ValueError as ve:
-                errorlog("Type convertion error", _loopidx, "Dont try to convert INT to STR or LIST to INT or etc")
+        if value[index].isalpha():
+            value[index] = variables[typedifpossible(value[index])]
             
-            value[index - 1] = str(res)
-            index -= 2
-            
-        if value[index] == "*":
-            if value[index - 1].isalpha():
-                value[index - 1] = variables[value[index - 1]]
-                
-            try:
-                res = int(value[index - 1]) * int(value[index + 1])
-                del value[index - 1]
-                del value[index - 1]
-            except ValueError as ve:
-                errorlog("Type convertion error", _loopidx, "Dont try to convert INT to STR or LIST to INT or etc")
-            
-            value[index - 1] = str(res)
-            index -= 2
-            
-        if value[index] == "/":
-            if value[index - 1].isalpha():
-                value[index - 1] = variables[value[index - 1]]
-                
-            try:
-                res = int(value[index - 1]) - int(value[index + 1])
-                del value[index - 1]
-                del value[index - 1]
-            except ZeroDivisionError as zde:
-                errorlog("ZeroDivisionError", _loopidx, "Dont divide with 0")
-            
-            value[index - 1] = str(res)
-            index -= 2
-            
-        if value[index] == "//":
-            if value[index - 1].isalpha():
-                value[index - 1] = variables[value[index - 1]]
-                
-            res = int(int(value[index - 1]) / int(value[index + 1]))
-            del value[index - 1]
-            del value[index - 1]
-            
-            value[index - 1] = str(res)
-            index -= 2
         index += 1
-    return value[0]
+    
+    value = "".join(value)
+    return eval(value)
         
 def conditionals(types, value, code):
     if types == "if":
@@ -117,7 +52,7 @@ def conditionals(types, value, code):
         
         except SyntaxError as se:
             errorlog(f"invalid syntax!",_loopidx, "Basic syntax error")
-
+    
 def printlnv(value):
     if regex.fullmatch(r'"[^"]*"', value):
         print(value[1:-1])  #removing '"' btw
@@ -125,10 +60,35 @@ def printlnv(value):
         if "+" in value or "-" in value or "*" in value or "//" in value or "/" in value:
             print(math(value))
         else:
-            try:
-                print(variables[value])
-            except KeyError as ke:
-                errorlog(f"No variable named {str(ke)}", _loopidx, "Add variable or fix")
+            if "[" in str(value):
+                codelistidx = 0
+                varname = ''
+                while codelistidx + 1 < len(value):
+                    
+                    if value[codelistidx] == "[":
+                        listidx = ""
+                        codelistidx += 1
+                        
+                        while value[codelistidx] != "]":
+                            listidx += str(value[codelistidx])
+                            codelistidx += 1
+                        
+                        res = []
+                        for thing in variables[varname]:
+                            if '"' in thing or '[' in thing or ']' in thing or ',' in thing:
+                                pass
+                            else:
+                                res.append(thing)
+                        print(res[int(listidx)])
+                    else:
+                        varname += value[codelistidx]
+                        
+                    codelistidx += 1
+            else:
+                try:
+                    print(variables[value])
+                except KeyError as ke:
+                    errorlog(f"No variable named {str(ke)}", _loopidx, "Add variable or fix")
 
 def printv(value):
     if regex.fullmatch(r'"[^"]*"', value):
@@ -137,10 +97,35 @@ def printv(value):
         if "+" in value or "-" in value or "*" in value or "//" in value or "/" in value:
             print(math(value))
         else:
-            try:
-                print(variables[value])
-            except KeyError as ke:
-                errorlog(f"No variable named {str(ke)}", _loopidx, "Add variable or fix")
+            if "[" in str(value):
+                codelistidx = 0
+                varname = ''
+                while codelistidx + 1 < len(value):
+                    
+                    if value[codelistidx] == "[":
+                        listidx = ""
+                        codelistidx += 1
+                        
+                        while value[codelistidx] != "]":
+                            listidx += str(value[codelistidx])
+                            codelistidx += 1
+                        
+                        res = []
+                        for thing in variables[varname]:
+                            if '"' in thing or '[' in thing or ']' in thing or ',' in thing:
+                                pass
+                            else:
+                                res.append(thing)
+                        print(res[int(listidx)])
+                    else:
+                        varname += value[codelistidx]
+                        
+                    codelistidx += 1
+            else:
+                try:
+                    print(variables[value])
+                except KeyError as ke:
+                    errorlog(f"No variable named {str(ke)}", _loopidx, "Add variable or fix")
 
 def inputv(value):
     variables[value] = input()
@@ -256,8 +241,8 @@ def run_block(code):
                     errorlog(f"'{other}' is a non-existing function or command", _loopidx, "Fix it")
                 else:
                     #declare variable if not there
-                    other = other.split(" ")
-                    makevar(other[0].strip(), other[2].strip())
+                    varval = line.partition("=")
+                    makevar(varval[0].strip(), varval[2].strip())
 
         _loopidx += 1
 
