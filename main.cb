@@ -1,6 +1,10 @@
 once() {
-    a = ["1", "2", "a"]
-    printv(a)
-    printv(a[0])
+    a = [[0,1,2,3], "2", "a"]
+    printlnv(a)
+    printlnv(a[0])
+    append("a", "aaaa")
+    removeidx("a", "0")
+    remove("a", "aaaa")
+    printlnv(a)
 end
 }

@@ -1,5 +1,6 @@
 import re as regex
 import time as t
+import ast
 
 initcommand = input().split(" ")
 starttime = t.time()
@@ -18,7 +19,7 @@ def typedifpossible(value):
         return int(value)
     except (ValueError, TypeError):
         return value
-    
+
 def math(value):
     value = value.split(" ")
     index = 0
@@ -61,29 +62,10 @@ def printlnv(value):
             print(math(value))
         else:
             if "[" in str(value):
-                codelistidx = 0
-                varname = ''
-                while codelistidx + 1 < len(value):
-                    
-                    if value[codelistidx] == "[":
-                        listidx = ""
-                        codelistidx += 1
-                        
-                        while value[codelistidx] != "]":
-                            listidx += str(value[codelistidx])
-                            codelistidx += 1
-                        
-                        res = []
-                        for thing in variables[varname]:
-                            if '"' in thing or '[' in thing or ']' in thing or ',' in thing:
-                                pass
-                            else:
-                                res.append(thing)
-                        print(res[int(listidx)])
-                    else:
-                        varname += value[codelistidx]
-                        
-                    codelistidx += 1
+                listidx = int(regex.findall(r'\[(\d+)\]', value)[0])
+                varname = regex.sub(r'\[.*?\]', '', str(value))
+
+                print(ast.literal_eval(variables[varname])[listidx])
             else:
                 try:
                     print(variables[value])
@@ -95,41 +77,37 @@ def printv(value):
         print(value[1:-1], end="")  #removing '"' btw
     else:
         if "+" in value or "-" in value or "*" in value or "//" in value or "/" in value:
-            print(math(value))
+            print(math(value), end='')
         else:
             if "[" in str(value):
-                codelistidx = 0
-                varname = ''
-                while codelistidx + 1 < len(value):
-                    
-                    if value[codelistidx] == "[":
-                        listidx = ""
-                        codelistidx += 1
-                        
-                        while value[codelistidx] != "]":
-                            listidx += str(value[codelistidx])
-                            codelistidx += 1
-                        
-                        res = []
-                        for thing in variables[varname]:
-                            if '"' in thing or '[' in thing or ']' in thing or ',' in thing:
-                                pass
-                            else:
-                                res.append(thing)
-                        print(res[int(listidx)])
-                    else:
-                        varname += value[codelistidx]
-                        
-                    codelistidx += 1
+                listidx = int(regex.findall(r'\[(\d+)\]', value)[0])
+                varname = regex.sub(r'\[.*?\]', '', str(value))
+
+                print(ast.literal_eval(variables[varname])[listidx], end='')
             else:
                 try:
-                    print(variables[value])
+                    print(variables[value], end='')
                 except KeyError as ke:
                     errorlog(f"No variable named {str(ke)}", _loopidx, "Add variable or fix")
 
 def inputv(value):
     variables[value] = input()
 
+def changelist(value, listname, type):
+    if type == "append":
+        target = ast.literal_eval(variables[listname])
+        target.append(value)
+        variables[listname] = str(target)
+
+    if type == "remove":
+        target = ast.literal_eval(variables[listname])
+        target.remove(value)
+        variables[listname] = str(target)
+
+    if type == "removefromidx":
+        target = ast.literal_eval(variables[listname])
+        target.pop(int(value))
+        variables[listname] = str(target)
 variables = {"capibara":"its crapibara"}
 def makevar(name, value):
     if "+" in value or "-" in value or "*" in value or "/" in value or "//" in value:
@@ -223,6 +201,27 @@ def run_block(code):
                 if matchval:
                     inputv(matchval.group(1))
             
+            case "append()":
+                matchval = regex.search(r"\((.*?)\)", line)
+                if matchval:
+                    matchval = matchval.group(1).split(",")
+                    print(matchval)
+                    changelist(matchval[1].strip("'").strip().strip('"'), matchval[0].strip("'").strip().strip('"'), "append")
+
+            case "remove()":
+                matchval = regex.search(r"\((.*?)\)", line)
+                if matchval:
+                    matchval = matchval.group(1).split(",")
+                    print(matchval)
+                    changelist(matchval[1].strip("'").strip().strip('"'), matchval[0].strip("'").strip().strip('"'), "remove")
+            
+            case "removeidx()":
+                matchval = regex.search(r"\((.*?)\)", line)
+                if matchval:
+                    matchval = matchval.group(1).split(",")
+                    print(matchval)
+                    changelist(matchval[1].strip("'").strip().strip('"'), matchval[0].strip("'").strip().strip('"'), "removefromidx")
+
             case "///":
                 #skips to where there is no comments
                 _loopidx += 1
